@@ -207,10 +207,54 @@ document.addEventListener('DOMContentLoaded', () => {
   (function envelopeBehavior(){
     const envelope = document.getElementById('envelope');
     if (!envelope) return;
+
+    function createPetalConfetti(x, y, count = 26) {
+      if (prefersReduced) return;
+      const body = document.body;
+      const petals = [];
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'petal';
+
+        // randomize initial rotation & size
+        const angle = Math.random() * 360;
+        const size = 6 + Math.random() * 16; // varied sizes
+        el.style.width = `${size}px`;
+        el.style.height = `${Math.round(size * 1.5)}px`;
+
+        // much wider horizontal spread and small vertical jitter
+        const spreadX = (Math.random() * 800 - 400); // -400 .. 400px
+        const spreadY = (Math.random() * 120 - 60);  // -60 .. 60px
+        el.style.left = `${x + spreadX}px`;
+        el.style.top = `${y + spreadY}px`;
+
+        el.style.transform = `rotate(${angle}deg) translate3d(0,0,0)`;
+
+        // substantially slower + staggered start
+        const dur = 2200 + Math.random() * 2800; // 2200 - 5000 ms
+        const delay = Math.random() * 800; // stagger
+        el.style.animation = `petal-fall ${dur}ms cubic-bezier(.2,.7,.2,1) ${delay}ms forwards`;
+
+        petals.push(el);
+        body.appendChild(el);
+
+        // remove after animation (include delay)
+        setTimeout(() => el.remove(), dur + delay + 500);
+      }
+    }
+
     const toggle = () => {
       const isOpen = envelope.classList.toggle('open');
       envelope.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        // origin: top-center of the envelope
+        const r = envelope.getBoundingClientRect();
+        const originX = Math.round(r.left + r.width / 2);
+        const originY = Math.round(r.top + r.height / 4);
+        createPetalConfetti(originX, originY, 22);
+      }
     };
+
     envelope.addEventListener('click', toggle);
     envelope.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
   })();
@@ -223,21 +267,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!ramo) return;
     const inner = ramo.querySelector('.ramo-inner');
     const flowerCount = 10; // usuario provee 10 SVGs
+
+    // build wrapped flowers (wrapper receives parallax transforms, child keeps float animation)
     for (let i = 1; i <= flowerCount; i++) {
+      const wrap = document.createElement('div');
+      wrap.className = 'flower-wrap';
+      wrap.style.transitionDelay = `${i * 18}ms`;
       const img = document.createElement('img');
       img.className = 'flower';
       img.src = `img/flores/flores${i}.svg`;
       img.alt = 'flor';
       img.style.transitionDelay = `${i * 80}ms`;
-      inner.appendChild(img);
+      wrap.appendChild(img);
+      inner.appendChild(wrap);
     }
-    // pareja de gatos principal
-    const main = document.createElement('img');
-    main.className = 'main-icon';
-    main.src = 'img/iconos/iconos_pareja1.svg';
-    main.alt = 'pareja de gatos';
-    main.setAttribute('aria-hidden','true');
-    inner.insertBefore(main, inner.firstChild);
+
+    // la imagen principal de la pareja se muestra ahora en el hero en lugar del ramo.
 
     // IntersectionObserver para activar 'bloom'
     const obs = new IntersectionObserver((entries) => {
@@ -249,6 +294,52 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, {threshold: 0.25});
     obs.observe(ramo);
+
+    // --- Parallax / tilt interaction ---
+    if (!prefersReduced) {
+      const wrappers = Array.from(inner.querySelectorAll('.flower-wrap'));
+      let tx = 0, ty = 0;
+      let raf = null;
+
+      function applyParallax() {
+        wrappers.forEach((w, i) => {
+          const depth = (i + 1) / wrappers.length;
+          const moveX = tx * 14 * depth; // scale movement by depth
+          const moveY = ty * 10 * depth;
+          w.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+        });
+        raf = null;
+      }
+
+      function onPointerMove(e) {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const nx = ((e.clientX - cx) / cx); // -1 .. 1
+        const ny = ((e.clientY - cy) / cy);
+        tx = nx; ty = ny;
+        if (!raf) raf = requestAnimationFrame(applyParallax);
+      }
+
+      function onDeviceOrientation(ev) {
+        // gamma: left-right tilt, beta: front-back tilt
+        const gamma = ev.gamma || 0; // -90 .. 90
+        const beta = ev.beta || 0;   // -180 .. 180
+        tx = Math.max(-1, Math.min(1, gamma / 30));
+        ty = Math.max(-1, Math.min(1, beta / 30));
+        if (!raf) raf = requestAnimationFrame(applyParallax);
+      }
+
+      // prefer device orientation on mobile, fallback to pointer
+      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS requires permission; we'll fallback to pointermove unless user allows
+        // add a quiet listener for deviceorientation (some browsers will never fire without permission)
+        window.addEventListener('deviceorientation', onDeviceOrientation, {passive:true});
+      } else if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', onDeviceOrientation, {passive:true});
+      }
+      // pointer fallback
+      window.addEventListener('pointermove', onPointerMove, {passive:true});
+    }
   })();
 
   /* ----------------------

@@ -24,6 +24,7 @@ h1,h2,h3{font-family:'Dancing Script',cursive}
 .hero{text-align:center;padding:2.5rem 1rem;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border-radius:2rem;margin:1.2rem 0;box-shadow:0 8px 30px rgba(0,0,0,0.6);backdrop-filter: blur(6px)}
 .hero h1{font-size:3rem;color:var(--rosa);text-shadow:0 2px 0 rgba(0,0,0,0.25)}
 .hero p{font-size:1.05rem;color:var(--muted);max-width:520px;margin:0.6rem auto;background:transparent;padding:0.6rem 1rem;border-radius:40px}
+.hero .hero-couple{width:96px;height:auto;display:block;margin:0.6rem auto 1rem;filter:drop-shadow(0 20px 40px rgba(138,90,199,0.18));transform:translateZ(0);opacity:0.98}
 .btn-sigue{background:linear-gradient(180deg,var(--lila),#7a3fb8);border:none;color:white;font-size:1.1rem;padding:0.8rem 1.6rem;border-radius:999px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.4);font-family:'Dancing Script',cursive}
 .btn-sigue:active{transform:translateY(2px)}
 /* CARGA (corazones + gatos) */
@@ -51,6 +52,7 @@ h1,h2,h3{font-family:'Dancing Script',cursive}
 /* RAMO */
 .ramo{display:flex;justify-content:center;align-items:center;padding:1rem;margin:1rem 0}
 .ramo-inner{display:flex;gap:8px;align-items:flex-end;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.6));background:linear-gradient(135deg, rgba(255,155,179,0.08), rgba(138,90,199,0.06));padding:14px;border-radius:20px;border:1px solid rgba(255,155,179,0.06)}
+.flower-wrap{width:64px;height:64px;display:inline-block;will-change:transform;transition:transform .25s cubic-bezier(.2,.9,.3,1)}
 .ramo .flower{width:64px;height:64px;opacity:0;transform:translateY(24px) rotate(-6deg) scale(.85);transition:transform .8s cubic-bezier(.22,.9,.35,1),opacity .6s,filter .5s;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.45))}
 .ramo.bloom .flower{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
 .ramo .flower:hover{transform:scale(1.06) translateY(-4px);filter:drop-shadow(0 12px 30px rgba(138,90,199,0.28))}
@@ -60,6 +62,10 @@ h1,h2,h3{font-family:'Dancing Script',cursive}
 /* floating/organic motion for flowers */
 @keyframes flower-float{0%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}100%{transform:translateY(0) rotate(-3deg)}}
 .ramo.bloom .flower{animation: flower-float 4s ease-in-out infinite}
+
+/* petal confetti */
+.petal{position:fixed;pointer-events:none;width:12px;height:18px;background:linear-gradient(135deg,#ff9bb3,#8a5ac7);border-radius:50% 50% 40% 40%;opacity:0.95;will-change:transform,opacity;z-index:9999;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.45))}
+@keyframes petal-fall{0%{transform:translateY(0) rotate(0deg) scale(0.95);opacity:1}60%{opacity:0.98}100%{transform:translateY(160vh) rotate(720deg) scale(0.75);opacity:0}}
 
 /* stronger shadows and accents for a dramatic romantic look */
 .carousel-container{box-shadow:0 24px 60px rgba(11,7,17,0.75), inset 0 -6px 30px rgba(138,90,199,0.03)}
