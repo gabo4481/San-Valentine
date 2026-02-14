@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ Para ti · San Valentín ✨</title>
+  <!-- Font Awesome 6 (iconos de corazones y gatos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: letra romántica -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- HERO con mensaje del imagen -->
+    <section class="hero">
+      <h1>✨ Para ti, mi amor ✨</h1>
+      <p>Tania Franyeli Eres El Amor De Mi Vida, No sabía muy bien cómo decirlo, así que decidí escribirlo bonito.</p>
+      <button class="btn-sigue" id="btnSigue">Sigue leyendo ↓</button>
+    </section>
+
+    <!-- CARGA GIGANTE: corazones y gatos flotando -->
+    <section class="carga-section" id="carga">
+      <h2>✨ Carga gigante de amor ✨</h2>
+      <div class="heart-loader" id="heartLoader">
+        <!-- Gran corazón latiente -->
+        <div class="big-heart">
+          <i class="fas fa-heart"></i>
+        </div>
+        <!-- Aquí se inyectarán los elementos flotantes con JS -->
+      </div>
+      <p class="carga-note"><i class="fas fa-cat"></i>  +  <i class="fas fa-heart"></i>  infinitos</p>
+    </section>
+
+    <!-- CARTA INTERACTIVA -->
+    <section class="carta" id="carta" aria-labelledby="cartaTitle">
+      <h2 id="cartaTitle">✉️ Una carta para ti</h2>
+      <div class="envelope" id="envelope" role="button" aria-expanded="false" tabindex="0">
+        <div class="envelope-front" aria-hidden="true"></div>
+        <div class="letter">
+          <div class="letter-content" id="letterContent">
+            <!-- Pega aquí tu mensaje estático dentro de este bloque en `index.html` -->
+            <p class="letter-text">Cada día a tu lado es un carrusel de emociones. Sin darme cuenta, me convertí en Víctor Van Dort y tú en mi Emily; me cautivaste de una forma que no pude ni quise evitar.
+
+A tu lado solo puedo pensar en un "nosotros". Contigo entendí finalmente el significado de la Ecuación de Dirac, porque no importa la distancia ni el tiempo: me siento entrelazado a ti, eternamente conectado a tu energía. No hay un solo día en que no agradezca el azar (o el destino) de tenerte en mi vida.
+
+Como dicen por ahí: "Mi amor por ti es final, no puede ser heredado ni modificado". Eres ese punto y coma (;) que le faltaba a mi código para ser perfecto; la pieza que le da sentido a toda la sintaxis de mi mundo.
+
+Amo ser tu luna para que tú seas mi Solaire, mi sol, la luz que guía mi camino.
+
+Te amodoro.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RAMO ANIMADO -->
+    <section class="ramo" id="ramo" aria-hidden="false">
+      <div class="ramo-inner" aria-hidden="true">
+        <!-- SVGs serán inyectados/animados con JS desde img/flores -->
+      </div>
+    </section>
+
+    <!-- CARRUSEL CARITAS -->
+    <section class="caritas" id="caritas">
+      <h2 id="caritasTitle">😊 Nuestras caritas favoritas</h2>
+      <div class="carousel-container">
+        <div class="carousel" id="carouselCaritas">
+          <!-- items generados dinámicamente (img/caritas) -->
+        </div>
+        <button class="carousel-prev" data-target="carouselCaritas">❮</button>
+        <button class="carousel-next" data-target="carouselCaritas">❯</button>
+        <div class="carousel-dots" id="carouselCaritasDots"></div>
+        <button class="carousel-pause" data-target="carouselCaritas" aria-pressed="false">Pausar autoplay</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE RECUERDOS (CARRUSEL) -->
+    <section class="recuerdos" id="recuerdos">
+      <h2>🌈 Nuestros recuerdos 🌈</h2>  
+      <div class="carousel-container">
+        <div class="carousel" id="carousel">
+          <!-- items generados dinámicamente con JS (para poder usar placekitten) -->
+        </div>
+        <button class="carousel-prev" id="prevBtn">❮</button>
+        <button class="carousel-next" id="nextBtn">❯</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-pause" data-target="carousel" aria-pressed="false">Pausar autoplay</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      <i class="fas fa-heart"></i> Con todo mi cariño, en San Valentín <i class="fas fa-heart"></i> <br>
+      <i class="fas fa-cat"></i> <i class="fas fa-cat"></i> <i class="fas fa-cat"></i>
+    </div>
+  </div>
+
+  <script src="js/script.js" defer></script>
+
+
+</body>
+</html>
